@@ -18,8 +18,8 @@ class CountryResource extends Resource
     protected static ?string $model = Country::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-        protected static ?string $navigationGroup = 'System Management';
-            protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'System Management';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -27,12 +27,15 @@ class CountryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                ->unique(ignoreRecord: true)
                     ->maxLength(255),
-                     Forms\Components\TextInput::make('code')
+                Forms\Components\TextInput::make('code')
                     ->required()
+                ->unique(ignoreRecord: true)
                     ->maxLength(2),
-                     Forms\Components\TextInput::make('phonecode')
+                Forms\Components\TextInput::make('phonecode')
                     ->required()
+                ->unique(ignoreRecord: true)
                     ->maxLength(4)
                     ->numeric(),
             ]);
@@ -44,10 +47,10 @@ class CountryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                      Tables\Columns\TextColumn::make('code'),
-                   
-                      Tables\Columns\TextColumn::make('phonecode'),
-                  
+                Tables\Columns\TextColumn::make('code'),
+
+                Tables\Columns\TextColumn::make('phonecode'),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

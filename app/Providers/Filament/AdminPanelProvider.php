@@ -29,12 +29,13 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->colors([
                 'danger' => Color::Rose,
-            'gray' => Color::Gray,
-            'info' => Color::Blue,
-            'primary' => Color::Indigo,
-            'success' => Color::Emerald,
-            'warning' => Color::Orange,
+                'gray' => Color::Gray,
+                'info' => Color::Blue,
+                'primary' => Color::Indigo,
+                'success' => Color::Emerald,
+                'warning' => Color::Orange,
             ])
+            ->maxContentWidth('full')
             ->collapsibleNavigationGroups(false)
             ->sidebarCollapsibleOnDesktop()
             ->font('Poppins')
@@ -61,6 +62,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
             ]);
     }
 }

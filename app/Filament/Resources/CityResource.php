@@ -7,19 +7,21 @@ use App\Filament\Resources\CityResource\RelationManagers;
 use App\Models\City;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rule;
 
 class CityResource extends Resource
 {
     protected static ?string $model = City::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office';
-     protected static ?string $navigationGroup = 'System Management';
-         protected static ?int $navigationSort = 3;
+    protected static ?string $navigationGroup = 'System Management';
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -27,10 +29,19 @@ class CityResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->rule(function (Get $get, $record) {
+                        $stateId = $get('state_id');
+
+                        return Rule::unique('cities', 'name')
+                            ->ignore($record?->id) // abaikan kalau sedang edit
+                            ->where(fn($query) => $query->where('state_id', $stateId));
+                    })
                     ->maxLength(255),
-                Forms\Components\TextInput::make('state_id')
+                Forms\Components\Select::make('state_id')
                     ->required()
-                    ->numeric(),
+                    ->relationship('state', 'name')
+                    ->searchable()
+                    ->preload(),
             ]);
     }
 
@@ -40,8 +51,7 @@ class CityResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('state_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('state.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

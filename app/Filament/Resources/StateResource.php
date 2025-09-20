@@ -7,11 +7,11 @@ use App\Filament\Resources\StateResource\RelationManagers;
 use App\Models\State;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rule;
 
 class StateResource extends Resource
 {
@@ -19,7 +19,7 @@ class StateResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
     protected static ?string $navigationGroup = 'System Management';
-        protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -27,10 +27,21 @@ class StateResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+
+                    ->rule(function (Get $get, $record) {
+                        $countryId = $get('country_id');
+
+                        return Rule::unique('states', 'name')
+                            ->ignore($record?->id) // abaikan kalau sedang edit
+                            ->where(fn($query) => $query->where('country_id', $countryId));
+                    })
+
                     ->maxLength(255),
-                Forms\Components\TextInput::make('country_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('country_id')
+                    ->relationship('country', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
             ]);
     }
 
@@ -40,8 +51,7 @@ class StateResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('country_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('country.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -52,6 +62,7 @@ class StateResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('country.name')
             ->filters([
                 //
             ])

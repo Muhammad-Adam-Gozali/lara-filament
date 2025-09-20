@@ -20,16 +20,16 @@ class StateSeeder extends Seeder
 		//
 		DB::table('states')->delete();
 		$states = [
-    ['id' => 1, 'name' => "Andaman and Nicobar Islands", 'country_id' => 101],
-    ['id' => 2, 'name' => "Kabul Province", 'country_id' => 102],
-    ['id' => 3, 'name' => "Punjab", 'country_id' => 103],
-    ['id' => 4, 'name' => "Bagmati", 'country_id' => 104],
-    ['id' => 5, 'name' => "Dhaka Division", 'country_id' => 105],
-    ['id' => 6, 'name' => "Western Province", 'country_id' => 106],
-    ['id' => 7, 'name' => "Thimphu District", 'country_id' => 107],
-    ['id' => 8, 'name' => "Yangon Region", 'country_id' => 108],
-    ['id' => 9, 'name' => "Male Atoll", 'country_id' => 109],
-    ['id' => 10, 'name' => "Guangdong", 'country_id' => 110],
+    ['name' => "Andaman and Nicobar Islands", 'country_id' => 1],
+     ['name' => "Kabul Province", 'country_id' => 2],
+    ['name' => "Punjab", 'country_id' => 3],
+     ['name' => "Bagmati", 'country_id' => 4],
+    ['name' => "Dhaka Division", 'country_id' => 5],
+    ['name' => "Western Province", 'country_id' => 6],
+    ['name' => "Thimphu District", 'country_id' => 7],
+    ['name' => "Yangon Region", 'country_id' => 8],
+    ['name' => "Male Atoll", 'country_id' => 9],
+    [ 'name' => "Guangdong", 'country_id' => 10],
 ];
 		DB::table('states')->insert($states);
 
