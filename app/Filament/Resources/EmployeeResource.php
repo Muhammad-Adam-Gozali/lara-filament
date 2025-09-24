@@ -14,6 +14,8 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ExportAction as ActionsExportAction;
+use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Indicator;
 use Filament\Tables\Filters\SelectFilter;
@@ -145,12 +147,14 @@ class EmployeeResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
+                ExportBulkAction::make()
+                ->exporter(EmployeeExporter::class),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->headerAction([
-                ExportAction::make()->exporter(EmployeeExporter::class),
+            ->headerActions([
+                ActionsExportAction::make()->exporter(EmployeeExporter::class),
             ]);
     }
 

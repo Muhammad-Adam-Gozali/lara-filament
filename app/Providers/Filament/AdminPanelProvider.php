@@ -50,6 +50,12 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
             ])
+            ->navigationGroups([
+    'Master Data',
+    'Employee Management',
+    'User Management',
+])
+
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -69,6 +75,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
     \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make()
-            ]);
+            ])
+            ->databaseNotifications();
     }
 }
