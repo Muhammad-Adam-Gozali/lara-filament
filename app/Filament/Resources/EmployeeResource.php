@@ -3,18 +3,21 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Exports\EmployeeExporter;
+use App\Filament\Imports\EmployeeImporter;
 use App\Filament\Resources\EmployeeResource\Pages;
 use App\Filament\Resources\EmployeeResource\RelationManagers;
 use App\Models\Employee;
 use Carbon\Carbon;
 use Filament\Actions\ExportAction;
 use Filament\Forms;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\ExportAction as ActionsExportAction;
+use Filament\Tables\Actions\ImportAction as ActionsImportAction;
 use Filament\Tables\Actions\ExportBulkAction;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\Indicator;
@@ -147,14 +150,17 @@ class EmployeeResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                ExportBulkAction::make()
-                ->exporter(EmployeeExporter::class),
                 Tables\Actions\BulkActionGroup::make([
+                    ExportBulkAction::make()
+                ->exporter(EmployeeExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
             ->headerActions([
-                ActionsExportAction::make()->exporter(EmployeeExporter::class),
+                ActionsExportAction::make()
+                ->exporter(EmployeeExporter::class),
+                ActionsImportAction::make()
+                ->importer(EmployeeImporter::class)
             ]);
     }
 
