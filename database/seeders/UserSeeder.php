@@ -22,16 +22,16 @@ class UserSeeder extends Seeder
             $superadmin->assignRole($superAdminRole);
         }
 
-        // --- Buat user1 ---
-        $user1 = User::factory()->create([
-            'name' => 'User 1',
-            'email' => 'user1@gmail.com',
+        // --- Buat user ---
+        $user = User::factory()->create([
+            'name' => 'User',
+            'email' => 'user@gmail.com',
         ]);
 
-        // Assign role user1 dari ShieldSeeder
-        $user1Role = Role::where('name', 'user1')->first();
-        if ($user1Role) {
-            $user1->assignRole($user1Role);
+        // Assign role user dari ShieldSeeder
+        $userRole = Role::where('name', 'user')->first();
+        if ($userRole) {
+            $user->assignRole($userRole);
         }
 
         // --- Optional: buat beberapa user random tanpa role ---

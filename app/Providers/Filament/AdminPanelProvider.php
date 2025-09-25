@@ -27,6 +27,9 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->registration()
+            ->passwordReset()
+            ->emailVerification()
             ->login()
             ->colors([
                 'danger' => Color::Rose,

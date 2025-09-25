@@ -21,11 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Filament::serving(function () {
-            if (auth()->check() && auth()->user()->email === 'superadmin@example.com') {
-                $user = auth()->user();
-                $user->syncPermissions(Permission::all());
-            }
-        });
+       //
     }
 }

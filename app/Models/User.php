@@ -6,12 +6,13 @@ namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
@@ -50,9 +51,30 @@ class User extends Authenticatable implements FilamentUser
         ];
     }
 
-     public function canAccessPanel(Panel $panel): bool
-    {
-         return str_ends_with($this->email, '@gmail.com')
-        && $this->hasVerifiedEmail();
+   public function canAccessPanel(Panel $panel): bool
+{
+    // Filter domain
+    if (! str_ends_with($this->email, '@gmail.com')) {
+        return false;
     }
+
+    // Kalau belum verify, izinkan login tapi arahkan ke notice
+    if (! $this->hasVerifiedEmail()) {
+        return true; // biarkan Filament handle redirect ke verify page
+    }
+
+    return true;
+}
+
+protected static function booted(): void
+{
+    static::created(function (User $user) {
+        // Pastikan role 'user' sudah ada di DB
+        if (\Spatie\Permission\Models\Role::where('name', 'user')->exists()) {
+            $user->assignRole('user');
+        }
+    });
+}
+
+
 }
