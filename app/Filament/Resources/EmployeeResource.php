@@ -158,7 +158,8 @@ class EmployeeResource extends Resource
             ])
             ->headerActions([
                 ActionsExportAction::make()
-                ->exporter(EmployeeExporter::class),
+                ->exporter(EmployeeExporter::class)
+                ->label('Export All Employees'),
                 ActionsImportAction::make()
                 ->importer(EmployeeImporter::class)
             ]);
