@@ -13,6 +13,7 @@ class UserSeeder extends Seeder
         // --- Buat superadmin ---
         $superadmin = User::factory()->create([
             'name' => 'Superadmin',
+            'username' => 'superadmin',
             'email' => 'superadmin@gmail.com',
         ]);
 
@@ -24,6 +25,7 @@ class UserSeeder extends Seeder
 
         // --- Buat user ---
         $user = User::factory()->create([
+            'username' => 'user',
             'name' => 'User',
             'email' => 'user@gmail.com',
         ]);

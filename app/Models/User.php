@@ -9,13 +9,14 @@ use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +25,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
     ];
@@ -69,7 +71,9 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 protected static function booted(): void
 {
     static::created(function (User $user) {
-        // Pastikan role 'user' sudah ada di DB
+          if (app()->runningInConsole()) {
+            return;
+        }
         if (\Spatie\Permission\Models\Role::where('name', 'user')->exists()) {
             $user->assignRole('user');
         }
