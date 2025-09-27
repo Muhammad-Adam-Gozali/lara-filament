@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
                 'success' => Color::Emerald,
                 'warning' => Color::Orange,
             ])
+            ->theme(asset('css/filament/admin/theme.css'))
             ->maxContentWidth('full')
             ->collapsibleNavigationGroups(false)
             ->sidebarCollapsibleOnDesktop()
